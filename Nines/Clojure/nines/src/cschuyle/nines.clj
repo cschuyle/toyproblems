@@ -1,20 +1,34 @@
 (ns cschuyle.nines
-  (:require [clojure.set :as set]))
+  (:require [clojure.set :as set]
+            [clojure.math.numeric-tower :as math]))
 
 (defn combinations
-  "Returns all combinations (pairs) of integers which are >0 <n, which sum to n."
+  "Returns all combinations (unordered pairs) of integers which are >0
+  <n, which sum to n."
+  [n]
+  (let [half-n (inc (math/floor (/ n 2)))]
+    (map (fn [x] [x (- n x)]) (range 1 half-n))))
+
+(defn permutations
+  "Returns all combinations (ordered pairs) of integers which are >0
+  <n, which sum to n."
   [n]
   (map (fn [x] [x (- n x)]) (range 1 n)))
 
+(defn commutative? [operator]
+  (#{+ *} operator))
+
+(defn combos-for
+  [operator n]
+  (if (commutative? operator) (combinations n) (permutations n)))
+
 (defn crossproduct
   "Returns the cross-product (cartesian product) of set a and set b,
-  using the supplied arithmetic operator (any function can be supplied
-  as operator as long as it takes 2 arguments and never throws an
-  exception.  Instead of throwin an exception, make it reurn nil)"
-  [operator set_a set_b]
+  using the supplied arithmetic operator."
+  [operator set-a set-b]
   (into #{} (filter identity ;; no nils! - those are the division-by-zeros
-                    (for [a set_a
-                          b set_b]
+                    (for [a set-a
+                          b set-b]
                       (operator a b)))))
 
 (defn- div
@@ -27,11 +41,11 @@
   nines.  Memoized for your pleasure."
   (memoize
    (fn [n]
-     (if (= 1 n) #{9}
-         (let [crossproducts (for [operator [+ - * div]
-                                   [a b]    (combinations n)]
-                               (crossproduct operator (order a) (order b)))]
-           (apply set/union crossproducts))))))
+     (if (= 1 n)
+       #{9}
+       (apply set/union (for [operator [+ - * div]
+                              [a b]    (combos-for operator n)]
+                          (crossproduct operator (order a) (order b))))))))
 
 (def natural-numbers
   "Infinite sequence of natural numbers (integers >0)"

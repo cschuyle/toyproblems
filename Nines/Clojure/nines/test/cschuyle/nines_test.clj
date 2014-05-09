@@ -3,8 +3,9 @@
             [cschuyle.nines :as nines]))
 
 (deftest test-combinations
-  (is (= (nines/combinations 2) [[1 1]]))
-  (is (= (nines/combinations 3) [[1 2] [2 1]])))
+  (is (= (nines/combos-for + 2) [[1 1]]))
+  (is (= (nines/combos-for - 3) [[1 2] [2 1]]))
+  (is (= (nines/combos-for + 3) [[1 2]])))
 
 (deftest test-crossproduct
   (is (= #{6 8} (nines/crossproduct + #{1 3} #{5}))))
