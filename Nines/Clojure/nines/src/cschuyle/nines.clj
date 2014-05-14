@@ -49,8 +49,8 @@
                           (crossproduct operator (order a) (order b))))))))
 
 (def natural-numbers
-  "Infinite sequence of natural numbers (integers >0)"
-  (lazy-cat [1] (map inc natural-numbers)))
+    "Infinite sequence of natural numbers (integers >0)"
+    (rest (range)))
 
 (defn solve
   "With no arguments, solves the Nines problem with nine nines.
