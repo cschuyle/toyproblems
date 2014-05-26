@@ -1,0 +1,7 @@
+.idea
+target
+*.iml
+*.ipr
+*~
+input/tmp*
+.DS_Store
