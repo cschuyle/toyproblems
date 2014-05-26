@@ -10,4 +10,8 @@
 
 (deftest larger-arity
   (is (= [:a] (symmetric-difference [:a :a :b :c] [:b :b :c] [:a :b])))
-  (is (empty? (symmetric-difference [:a :a :b :c] [:b :b :c] [:a :b] [:a]))))
+  (is (empty? (symmetric-difference [:a] [:a :b]  [:b :b :c] [:a :a :b :c]))))
+
+(deftest non-commutative
+  (is (= (sort (symmetric-difference [:a :c] [:c] [:c :c]))
+         (sort (symmetric-difference [:c :c] [:c] [:a :c])))))
