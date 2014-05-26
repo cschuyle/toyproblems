@@ -230,6 +230,7 @@ namespace CarlsNines {
     ostream_iterator<double> outter (out, ",");
     copy (list.begin(), list.end(), outter);
     out << "__END LIST__";
+    return out;
   }
 
   ostream & operator<< (ostream & out, Nines const & impl) {
