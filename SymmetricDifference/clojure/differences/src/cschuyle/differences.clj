@@ -1,13 +1,16 @@
 (ns cschuyle.differences)
 
+(defn update-in-with-default [m k f d]
+  (update-in m [k] #(f (if (nil? %) d %))))
+
 (defn inc-in [m k]
   "If the key k already exists in map m, increment it.  Otherwise set it to 1"
-  (assoc m k (inc (or (get m k) 0))))
+  (update-in-with-default m k inc 0))
 
 (defn dec-in
   "If the key k already exists in map m, decrement it.  Otherwise set it to -1"
   [m k]
-  (assoc m k (dec (or (get m k) 0))))
+  (update-in-with-default m k dec 0))
 
 (defn symmetric-difference
   ([a] a)
