@@ -1,19 +1,20 @@
 (ns cschuyle.differences)
 
-(defn vinc [m k]
-  (if (nil? (get m k)) (assoc m k 1)
-      (update-in m [k] inc)))
+(defn inc-in [m k]
+  "If the key k already exists in map m, increment it.  Otherwise set it to 1"
+  (assoc m k (inc (or (get m k) 0))))
 
-(defn vdec [m k]
-  (if (nil? (get m k)) (assoc m k -1)
-      (update-in m [k] dec)))
+(defn dec-in
+  "If the key k already exists in map m, decrement it.  Otherwise set it to -1"
+  [m k]
+  (assoc m k (dec (or (get m k) 0))))
 
 (defn symmetric-difference
   ([a] a)
   ([a b]
      (as-> {} acc
-           (reduce (fn [m k] (vinc m k)) acc a)
-           (reduce (fn [m k] (vdec m k)) acc b)
+           (reduce (fn [m k] (inc-in m k)) acc a)
+           (reduce (fn [m k] (dec-in m k)) acc b)
            (reduce-kv (fn [l k v] (if (= v 0) l (concat l (take (Math/abs v) (repeat k))))) [] acc)))
   ([a b & more]
      (apply symmetric-difference
