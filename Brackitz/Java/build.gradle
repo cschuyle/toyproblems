@@ -1,0 +1,14 @@
+group 'dragnon'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'org.testng:testng:6.8'
+}
+
+test.useTestNG()
