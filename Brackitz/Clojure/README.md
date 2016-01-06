@@ -1,13 +1,15 @@
 # brackitz
 
 A coding challenge I got for an interview.  It was administered by
-Hackerrank (on behalf of the actual interviewing compnay), but I
-didn't submit this version (I submitted it in Java 7 instead, yes
-chicken me).
+Hackerrank (on behalf of the actual interviewing company), but I
+didn't submit this Cllojure version (I submitted it in Java 7 instead, 
+yes chicken me).
 
-The challenge is: strings containing balanced brackets of the () [] {}
-variety (plus any other characters besides these, I elect to ignore),
-are valid; otherwise (if the brackets are not balances), not valid. 
+The challenge is: Validate properly-bracketed strings.  A valid string 
+must contain only balanced brackets of the () [] {} variety (I elect to 
+ignore any characters besides the brackets - the condition is, any of 
+the brackets must be properly balanced, but the string can contain any 
+other characters.)
 
 This has a bit of extra credit in it: It gives relatively good
 validation error messages.
