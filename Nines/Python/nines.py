@@ -12,7 +12,7 @@ for iteration in range(2,10):
                 solutions.add(subtree_value - other_subtree_value)
                 solutions.add(other_subtree_value - subtree_value)
                 if (other_subtree_value != 0): solutions.add(subtree_value / other_subtree_value)
-                if (subtree_value != 0): solutions.add(other_subtree_value * subtree_value)
+                if (subtree_value != 0): solutions.add(other_subtree_value / subtree_value)
     generations[iteration] = solutions
 last_gen = generations[9]
 print "{} elements in generation 9".format(len(last_gen))
