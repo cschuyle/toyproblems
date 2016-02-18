@@ -1,17 +1,26 @@
-generations = {1: {9.0}}
 
+pair_solutions = {}
+def pair_solution(a,b):
+    if((a,b) in pair_solutions): return pair_solutions[(a,b)]
+    solutions = []
+    solutions.append(a * b)
+    solutions.append(a + b)
+    solutions.append(a - b)
+    if(a != b): solutions.append(b - a)
+    if(a != 0): solutions.append(b / a)
+    if(b != 0 and a != b and a != -b): solutions.append(a / b)
+    frozen = tuple(solutions)
+    pair_solutions[(a,b)] = frozen
+    return frozen
+
+generations = {1: {9.0}}
 up_to = 11
 for iteration in range(2, up_to+1):
     solutions = set()
     for subtree_index in range(1, iteration/2 + 1):
         for a in generations[subtree_index]:
             for b in generations[iteration - subtree_index]:
-                solutions.add(a * b)
-                solutions.add(a + b)
-                solutions.add(a - b)
-                if(a != b): solutions.add(b - a)
-                if(a != 0): solutions.add(b / a)
-                if(b != 0 and a != b and a != -b): solutions.add(a / b)
+                solutions.update(pair_solution(a, b))
     generations[iteration] = solutions
     print "{} elements in generation {}".format(len(solutions), iteration)
     nat = 0
