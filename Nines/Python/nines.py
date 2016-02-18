@@ -2,33 +2,33 @@
 pair_solutions = {}
 def pair_solution(a,b):
     if((a,b) in pair_solutions): return pair_solutions[(a,b)]
-    solutions = []
+    solutions = set()
     if(a == 0 or b == 0):
-        solutions.append(0)
+        solutions.add(0)
     elif(a == 1):
-        solutions.append(b)
+        solutions.add(b)
     elif(b == 1):
-        solutions.append(a)
+        solutions.add(a)
     else:
-        solutions.append(a * b)
+        solutions.add(a * b)
 
     if(a == 0):
-        solutions.append(b)
+        solutions.add(b)
     elif(b == 0):
-        solutions.append(a)
+        solutions.add(a)
     else:
-        solutions.append(a + b)
+        solutions.add(a + b)
 
-    solutions.append(a - b)
+    solutions.add(a - b)
 
     if(a != b):
         if(a != 0):
-            solutions.append(b - a)
+            solutions.add(b - a)
         if(b != 0 and b != 1 and a != -b):
-            solutions.append(a / b)
+            solutions.add(a / b)
 
     if(a != 0 and a != 1):
-        solutions.append(b / a)
+        solutions.add(b / a)
 
     frozen = tuple(solutions)
     pair_solutions[(a,b)] = frozen
