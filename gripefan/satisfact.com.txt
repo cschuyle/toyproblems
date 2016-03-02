@@ -1,0 +1,2 @@
+A system to specify the goal or outcome of operations, yet not exactly how to get it done; the system figures it out iself.
+

@@ -1,0 +1,18 @@
+How to combine polyglotism in humand and computer languages.
+
+Generate languages based on experience and goal
+
+* Based on "shape" of existing ones that you "like"
+
+Heuristic languages?  Can you have a computer language that is heuristic yet trustable?  Maybe have formal contracts and just "hints" on how to get the contract satified?
+
+satisfact.com
+
+Invent your own language, give it your own accent (also neat sounds, clicks, tones)
+Ask for neat spins on grammar, idioms, novel sets of vocabulary that are abnormally rich ...
+Then have like an interactive game where you can form tribes and try to conquer the universe.
+Tribes will fidn themselves caught together and the languages will fuse.  Genetic algorithms will create new languages.  Players can invent their own algorithms too.  The most popular tribes/langauges "win"
+
+Of course there is also terrain, music, creture generator ....  Players can engineer all of this.  But they also gotta know stuff to be allowed to contribue: Trivia, math, history, geography, psychology, art, phtsics, biology, literature ...
+
+
