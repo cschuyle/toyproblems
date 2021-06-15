@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/big"
 )
 
@@ -58,4 +59,18 @@ func comparableRational(rat *big.Rat) ComparableRational {
 type ComparableRational struct {
 	numerator   int64
 	denominator int64
+}
+
+func ComparableRationalSetString(nines *NinesSolution) []string {
+	return MapFractString(nines, func(n *ComparableRational) string {
+		return fmt.Sprintf("%d/%d", n.numerator, n.denominator)
+	})
+}
+
+func MapFractString(coll *NinesSolution, f func(n *ComparableRational) string) []string {
+	ret := make([]string, 0)
+	for n := range *coll {
+		ret = append(ret, f(&n))
+	}
+	return ret
 }
