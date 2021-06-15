@@ -7,7 +7,7 @@ import (
 	"sync"
 )
 
-const n = 12
+const n = 13
 
 var solutionBroadcasters [n]chan *NinesSolution
 
@@ -18,7 +18,13 @@ func main() {
 	}
 
 	for i := 0; i < n; i++ {
-		go computeSolutionN(i+1, solutionBroadcasters[i])
+		solution := computeSolutionN(i + 1)
+		i := i
+		go func() {
+			for {
+				solutionBroadcasters[i] <- solution
+			}
+		}()
 	}
 	solutionN := <-solutionBroadcasters[n-1]
 	for actualSolution := 0; true; actualSolution++ {
@@ -30,40 +36,55 @@ func main() {
 	fmt.Printf("Nines: %s\n", ComparableRationalSetString(solutionN))
 }
 
-func computeSolutionN(n int, solutionBroadcaster chan *NinesSolution) {
+func computeSolutionN(n int) *NinesSolution {
 	solution := make(NinesSolution)
+	mux := sync.Mutex{}
 
 	if n == 1 {
 		solution[ComparableRational{9, 1}] = struct{}{}
+		fmt.Println("Solution 1 Done, 1 solutions")
 	} else {
-		for i := 1; i <= n/2; i++ {
-			solution1 := <-solutionBroadcasters[i-1]
-			solution2 := <-solutionBroadcasters[n-i-1]
-			fmt.Printf("N=%d: Received solutions %d and %d\n", n, i, n-i)
+		wg := sync.WaitGroup{}
+		// n == 2 => middleSolution = 1
+		// n == 3 => middleSolution = 2
+		middleSolution := (n + 1) / 2
+		wg.Add(middleSolution)
+		for i := 1; i <= middleSolution; i++ {
+			i := i
+			go func() {
+				defer wg.Done()
 
-			wg := sync.WaitGroup{}
-			numSubSolutions := len(*solution1)
-			wg.Add(numSubSolutions)
-			subSolutions := make([]*NinesSolution, numSubSolutions)
-			j := 0
-			for a := range *solution1 {
-				go termOperationSolution(a, solution2, &subSolutions[j], &wg)
-				j++
-			}
-			wg.Wait()
+				// n == 2 => [1,1]
+				// n == 3 => [0,1], [1,0]  means if i==1, [i-1,n-i-1]
+				solution1 := <-solutionBroadcasters[i-1]
+				solution2 := <-solutionBroadcasters[n-i-1]
+				fmt.Printf("N=%d: Received solutions %d and %d\n", n, i, n-i)
 
-			for i := 0; i < numSubSolutions; i++ {
-				merge(&solution, subSolutions[i])
-			}
+				numSubSolutions := len(*solution1)
+				subSolutions := make([]*NinesSolution, numSubSolutions)
 
+				wg2 := sync.WaitGroup{}
+				wg2.Add(numSubSolutions)
+
+				j := 0
+				for a := range *solution1 {
+					go termOperationSolution(a, solution2, &subSolutions[j], &wg2)
+					j++
+				}
+				wg2.Wait()
+
+				for x := 0; x < numSubSolutions; x++ {
+					mux.Lock()
+					merge(&solution, subSolutions[x])
+					mux.Unlock()
+				}
+			}()
 		}
+		wg.Wait()
 
 		fmt.Println("Solution", n, " Done, ", len(solution), " solutions")
 	}
-
-	for {
-		solutionBroadcaster <- &solution
-	}
+	return &solution
 }
 
 func merge(intoSolution *NinesSolution, fromSolution *NinesSolution) {
